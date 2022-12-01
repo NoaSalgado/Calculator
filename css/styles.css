@@ -94,4 +94,6 @@ button:active {
 
 .equals-btn {
   background-color: #fb8500;
+
+  grid-column: 3 / 5;
 }
