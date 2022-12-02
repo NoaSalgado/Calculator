@@ -34,7 +34,7 @@ const updateOperand = (number) => {
 };
 
 const prepareOperation = (op) => {
-  if (!actualOperand) return;
+  if (actualOperand === "") return;
   if (prevOperand !== "") {
     operate();
   }
@@ -57,7 +57,7 @@ const operate = () => {
     case "-":
       result = subract(firstOperand, secondOperand);
       break;
-    case "*":
+    case "x":
       result = multiply(firstOperand, secondOperand);
       break;
     case "÷":
