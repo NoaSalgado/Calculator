@@ -8,6 +8,8 @@ const calculatorScreen = document.querySelector(".calculator__screen");
 const numberBtns = document.querySelectorAll("[data-number]");
 const operatorBtns = document.querySelectorAll("[data-operator]");
 const equalsBtn = document.querySelector("[data-equals]");
+const clearBtn = document.querySelector("[data-clear]");
+const clearAllBtn = document.querySelector("[data-all-clear]");
 
 const add = (prev, actual) => prev + actual;
 const subract = (prev, actual) => prev - actual;
@@ -19,6 +21,11 @@ const divide = (prev, actual) => {
     return prev / actual;
   }
 };
+const getPercentage = (operand) => {
+  const percentage = Number(operand) / 100;
+  actualOperand = percentage.toString();
+  updateScreen();
+};
 
 const updateScreen = () => {
   calculatorScreen.innerHTML = actualOperand;
@@ -29,12 +36,26 @@ const updateOperand = (number) => {
     return;
   }
 
+  if (actualOperand.length > 9) {
+    return;
+  }
+
   actualOperand += number;
   updateScreen();
 };
 
 const prepareOperation = (op) => {
   if (actualOperand === "") return;
+
+  if (op === "%") {
+    getPercentage(actualOperand);
+    return;
+  }
+
+  if (actualOperand.length > 12) {
+    actualOperand = "";
+    return;
+  }
   if (prevOperand !== "") {
     operate();
   }
@@ -64,9 +85,25 @@ const operate = () => {
       result = divide(firstOperand, secondOperand);
       break;
   }
-  actualOperand = result;
+
+  actualOperand = result.toString();
+  if (actualOperand.length > 12) {
+    actualOperand = `${actualOperand.slice(0, 11)}...`;
+  }
   operator = undefined;
   prevOperand = "";
+  updateScreen();
+};
+
+const deleteNumber = () => {
+  actualOperand = actualOperand.slice(0, actualOperand.length - 1);
+  updateScreen();
+};
+
+const clearAll = () => {
+  prevOperand = "";
+  actualOperand = 0;
+  operator = undefined;
   updateScreen();
 };
 
@@ -84,3 +121,7 @@ operatorBtns.forEach((btn) => {
 });
 
 equalsBtn.addEventListener("click", operate);
+
+clearBtn.addEventListener("click", deleteNumber);
+
+clearAllBtn.addEventListener("click", clearAll);
