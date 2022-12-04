@@ -131,6 +131,7 @@ const manageKeyboardKeys = (e) => {
   } else if (e.key === "*") {
     prepareOperation("x");
   } else if (e.key === "/") {
+    e.preventDefault();
     prepareOperation("÷");
   } else if (e.key === "Enter" || e.key === "=") {
     operate();
@@ -141,9 +142,10 @@ const manageKeyboardKeys = (e) => {
   }
 };
 
-//Events
-window.addEventListener("load", updateScreen);
+//Starts calculator
+updateScreen();
 
+//Events
 numberBtns.forEach((btn) => {
   btn.addEventListener("click", () => updateOperand(btn.innerText));
 });
@@ -160,7 +162,6 @@ clearBtn.addEventListener("click", deleteNumber);
 
 clearAllBtn.addEventListener("click", clearAll);
 
-window.addEventListener("keydown", (e) => {
-  console.log(e);
+document.addEventListener("keydown", (e) => {
   manageKeyboardKeys(e);
 });
