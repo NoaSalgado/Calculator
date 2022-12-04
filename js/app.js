@@ -1,6 +1,6 @@
 //Globals
 let prevOperand = "";
-let actualOperand = "";
+let actualOperand = "0";
 let operator;
 
 //DOM Elements
@@ -32,6 +32,10 @@ const updateScreen = () => {
 };
 
 const updateOperand = (number) => {
+  if (actualOperand === "0" || actualOperand === "Error") {
+    actualOperand = "";
+  }
+
   if (number === "." && actualOperand.includes(".")) {
     return;
   }
@@ -98,13 +102,18 @@ const operate = () => {
 };
 
 const deleteNumber = () => {
-  actualOperand = actualOperand.slice(0, actualOperand.length - 1);
+  if (actualOperand.length === 1) {
+    actualOperand = "0";
+  } else {
+    actualOperand = actualOperand.slice(0, actualOperand.length - 1);
+  }
+
   updateScreen();
 };
 
 const clearAll = () => {
   prevOperand = "";
-  actualOperand = 0;
+  actualOperand = "0";
   operator = undefined;
   updateScreen();
 };
