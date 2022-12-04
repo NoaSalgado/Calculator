@@ -87,9 +87,11 @@ const operate = () => {
   }
 
   actualOperand = result.toString();
+
   if (actualOperand.length > 12) {
     actualOperand = `${actualOperand.slice(0, 11)}...`;
   }
+
   operator = undefined;
   prevOperand = "";
   updateScreen();
@@ -105,6 +107,29 @@ const clearAll = () => {
   actualOperand = 0;
   operator = undefined;
   updateScreen();
+};
+
+const manageKeyboardKeys = (e) => {
+  if (
+    (e.key >= 0 && e.key <= 9) ||
+    (e.code.match(/[0-9]/) && e.key !== "/" && e.key !== "%")
+  ) {
+    updateOperand(e.code.charAt(e.code.length - 1));
+  } else if (e.key === ".") {
+    updateOperand(e.key);
+  } else if (e.key === "+" || e.key === "-" || e.key === "%") {
+    prepareOperation(e.key);
+  } else if (e.key === "*") {
+    prepareOperation("x");
+  } else if (e.key === "/") {
+    prepareOperation("÷");
+  } else if (e.key === "Enter" || e.key === "=") {
+    operate();
+  } else if (e.code === "Backspace") {
+    deleteNumber();
+  } else if (e.code === "Escape") {
+    clearAll();
+  }
 };
 
 //Events
@@ -125,3 +150,8 @@ equalsBtn.addEventListener("click", operate);
 clearBtn.addEventListener("click", deleteNumber);
 
 clearAllBtn.addEventListener("click", clearAll);
+
+window.addEventListener("keydown", (e) => {
+  console.log(e);
+  manageKeyboardKeys(e);
+});
